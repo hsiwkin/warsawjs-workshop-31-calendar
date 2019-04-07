@@ -1,0 +1,27 @@
+{
+  "name": "warsawjs-workshop-31-calendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsiwkin/warsawjs-workshop-31-calendar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hsiwkin/warsawjs-workshop-31-calendar/issues"
+  },
+  "homepage": "https://github.com/hsiwkin/warsawjs-workshop-31-calendar#readme"
+}
