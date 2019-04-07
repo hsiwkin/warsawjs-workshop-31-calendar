@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 require('./web/routing/base.router')(app);
 require('./web/routing/calendar.router')(app);
 require('./web/routing/event.router')(app);
+require('./web/routing/day.router')(app);
 
 (async () => {
 
