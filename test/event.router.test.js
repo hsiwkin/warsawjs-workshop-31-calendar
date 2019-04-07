@@ -1,10 +1,10 @@
 const express = require('express');
 const supertest = require('supertest');
 const bodyParser = require('body-parser');
+const EventModel = require('../models/event-model');
 
 const router = require('../web/routing/event.router');
 const connect = require('../db');
-const EventModel = require('../models/event-model');
 
 const Ajv = require('ajv');
 const ajv = new Ajv();
@@ -18,6 +18,11 @@ beforeEach(() => {
 
 beforeAll(async () => {
     await connect();
+});
+
+afterEach(async () => {
+    await EventModel.deleteMany({ title: 'test-event-title' });
+    await EventModel.deleteMany({ title: 'New Event Title' });
 });
 
 it("POST /api/event should be consistent with event schema", async () => {
@@ -38,7 +43,7 @@ it("POST /api/event should be consistent with event schema", async () => {
     expect(validate.errors).toBeNull;
 });
 
-fit("check if records are saved in the db", async () => {
+it("check if records are saved in the db", async () => {
     await supertest(app)
         .post('/api/event')
         .send({
@@ -52,4 +57,27 @@ fit("check if records are saved in the db", async () => {
 
     const list = await EventModel.find({ title: 'New Event Title' });
     expect(list.length).toEqual(1);
+});
+
+const fake = () => ({
+    title: 'test-event-title',
+    description: 'test-event-description',
+    time: new Date().toISOString(),
+    notification: false
+});
+
+it("should delete records from db", async () => {
+    const model = new EventModel(fake());
+    await model.save();
+    const firstEventId = (await EventModel.find().limit(1))[0]._id;
+    const list = await EventModel.find({ title: 'test-event-title' });
+    expect(list.length).toEqual(1);
+    
+    await supertest(app)
+        .delete(`/api/event/${model._id}`)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json');
+
+    const list2 = await EventModel.find({ title: 'test-event-title' });
+    expect(list2.length).toEqual(0);
 });
