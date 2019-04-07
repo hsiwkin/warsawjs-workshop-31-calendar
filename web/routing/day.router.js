@@ -5,10 +5,11 @@ const router = express.Router();
 
 router.get('/api/day', async (req, res) => {
     const day = req.query.date;
+    const formatString = 'YYYY-MM-DDTHH:mm';
     
     const [start, end] = [
-        dayjs(day).startOf('day'),
-        dayjs(day).endOf('day')
+        dayjs(day).startOf('day').format(formatString),
+        dayjs(day).endOf('day').format(formatString)
     ];
 
     const events = await EventModel.find({time: {
