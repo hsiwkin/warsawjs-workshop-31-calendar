@@ -5,6 +5,7 @@ require('dotenv').config({
 });
 
 require('./web/routing/base.router')(app);
+require('./web/routing/calendar.router')(app);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server was starded at http://localhost:${process.env.PORT}`);
