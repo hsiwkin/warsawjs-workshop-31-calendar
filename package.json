@@ -8,6 +8,7 @@
     "express": "^4.16.4"
   },
   "devDependencies": {
+    "ajv": "^6.10.0",
     "jasmine": "^3.4.0",
     "nodemon": "^1.18.10",
     "supertest": "^4.0.2"
