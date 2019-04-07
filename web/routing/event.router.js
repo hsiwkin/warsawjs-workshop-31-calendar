@@ -17,8 +17,21 @@ router.delete('/api/event/:id', async (req, res) => {
     EventModel.deleteOne({_id: id}, (error) => {
         if (error) {
             console.error('error', error);
+            res.sendStatus(400);
         } else {
             res.status(200).json({ id });
+        }
+    });
+});
+
+router.put('/api/event/:id', async (req, res) => {
+    const id = req.params.id;
+    EventModel.updateOne({_id: id}, req.body, (error) => {
+        if (error) {
+            console.error(error);
+            res.sendStatus(400);
+        } else {
+            res.status(200).json(id);
         }
     });
 });

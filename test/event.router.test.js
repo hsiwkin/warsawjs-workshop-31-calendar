@@ -23,6 +23,7 @@ beforeAll(async () => {
 afterEach(async () => {
     await EventModel.deleteMany({ title: 'test-event-title' });
     await EventModel.deleteMany({ title: 'New Event Title' });
+    await EventModel.deleteMany({ title: 'Ala ma kota' });
 });
 
 it("POST /api/event should be consistent with event schema", async () => {
@@ -69,7 +70,7 @@ const fake = () => ({
 it("should delete records from db", async () => {
     const model = new EventModel(fake());
     await model.save();
-    const firstEventId = (await EventModel.find().limit(1))[0]._id;
+    
     const list = await EventModel.find({ title: 'test-event-title' });
     expect(list.length).toEqual(1);
     
@@ -80,4 +81,20 @@ it("should delete records from db", async () => {
 
     const list2 = await EventModel.find({ title: 'test-event-title' });
     expect(list2.length).toEqual(0);
+});
+
+it('should update data', async () => {
+    const model = new EventModel(fake());
+    await model.save();
+
+    const newTitle = 'Ala ma kota';
+
+    await supertest(app)
+        .put(`/api/event/${model._id}`)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .send({ title: newTitle });
+    
+    const list = await EventModel.find({ title: newTitle });
+    expect(list.length).toEqual(1);
 });
